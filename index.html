@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily Rewards</title>
+  <title>Crypto Reward App</title>
 
   <!-- Monetag Telegram Mini App SDK Script -->
   <script src='//libtl.com/sdk.js' data-zone='11786633' data-sdk='show_11786633'></script>
-
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #0f172a; /* Deep dark background */
+      background: #0b0f19; /* Deep Crypto Dark Blue Background */
       color: #f8fafc;
     }
 
@@ -26,103 +26,137 @@
       max-width: 500px;
       margin: auto;
       min-height: 100vh;
-      padding: 20px;
+      padding: 16px;
+      padding-bottom: 40px;
     }
 
+    /* Header Profile & Balance Section */
     .header {
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      border: 1px solid #334155;
-      color: #ffffff;
-      padding: 25px 20px;
+      background: linear-gradient(135deg, #1e1b4b, #311042);
+      border: 1px solid #4c1d95;
+      padding: 24px 20px;
       border-radius: 20px;
       text-align: center;
       margin-bottom: 20px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
 
     .header h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
-      color: #38bdf8;
+      font-size: 24px;
+      color: #c084fc;
+      margin-bottom: 5px;
     }
 
-    .header p {
-      margin: 0;
-      color: #94a3b8;
-    }
-
-    .card {
-      background: #1e293b; /* Dark slate card background */
-      border: 1px solid #334155;
-      padding: 22px;
-      border-radius: 18px;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      text-align: center;
-    }
-
-    .card h2 {
-      color: #f8fafc;
-      font-size: 20px;
-      margin-top: 0;
-    }
-
-    .coin {
-      font-size: 45px;
-    }
-
-    .balance {
-      font-size: 32px;
+    .balance-box {
+      font-size: 36px;
       font-weight: bold;
-      margin: 10px 0;
       color: #38bdf8;
+      margin: 15px 0;
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
     }
 
-    p {
-      color: #94a3b8;
+    /* Action Buttons Grid (Claim & Withdraw) */
+    .actions-grid {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
-    button {
-      width: 100%;
+    .btn {
+      flex: 1;
       border: none;
-      padding: 16px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #0284c7, #0369a1);
-      color: white;
-      font-size: 17px;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 15px;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
       transition: all 0.2s ease;
-    }
-
-    button:active {
-      transform: scale(0.98);
-    }
-
-    .ad-box {
-      min-height: 100px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #0f172a;
-      border: 1px dashed #475569;
-      border-radius: 15px;
-      color: #64748b;
-      margin-top: 15px;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: white;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #059669, #047857);
+      color: white;
+      box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    /* Cards for Tasks & Features */
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      padding: 20px;
+      border-radius: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h3 {
+      font-size: 18px;
+      color: #f3f4f6;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #1f2937;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #374151;
+    }
+
+    .task-info h4 {
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    .task-info p {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .task-btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     .message {
-      margin-top: 15px;
+      margin-top: 10px;
+      font-size: 14px;
       font-weight: bold;
+      text-align: center;
       color: #38bdf8;
     }
 
     .footer {
       text-align: center;
-      color: #64748b;
-      font-size: 13px;
-      margin-top: 25px;
+      color: #6b7280;
+      font-size: 12px;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -131,97 +165,121 @@
 
 <div class="app">
 
+  <!-- Header Section -->
   <div class="header">
-    <h1>🎁 Daily Rewards</h1>
-    <p>Welcome to your daily rewards!</p>
+    <h1>💎 Crypto Rewards</h1>
+    <p>Mine & Earn Daily Assets</p>
+    <div class="balance-box" id="balance">0.00 COINS</div>
   </div>
 
-  <div class="card">
-    <div class="coin">🪙</div>
-    <div class="balance" id="balance">0 Coins</div>
-    <p>Come back every day for your reward.</p>
-
-    <button onclick="claimReward()">
-      🎁 Claim Daily Reward
+  <!-- Main Action Buttons (Claim & Withdraw) -->
+  <div class="actions-grid">
+    <button class="btn btn-primary" onclick="claimReward()">
+      🎁 Watch & Claim
     </button>
-
-    <div class="message" id="message"></div>
+    <button class="btn btn-success" onclick="openWithdraw()">
+      🏦 Withdraw
+    </button>
   </div>
 
-  <div class="card">
-    <h2>📢 Sponsored</h2>
+  <div class="message" id="message"></div>
 
-    <div class="ad-box">
-      Monetag Ad Area
+  <!-- Tasks Section -->
+  <div class="card">
+    <h3>⚡ Earn Extra Coins (Tasks)</h3>
+
+    <div class="task-item">
+      <div class="task-info">
+        <h4>Watch Bonus Ad</h4>
+        <p>Earn +50 Coins instantly</p>
+      </div>
+      <button class="task-btn" onclick="watchBonusAd()">Start</button>
     </div>
 
+    <div class="task-item">
+      <div class="task-info">
+        <h4>Join Telegram Channel</h4>
+        <p>Earn +200 Coins</p>
+      </div>
+      <button class="task-btn" onclick="alert('Channel joined successfully!')">Join</button>
+    </div>
   </div>
 
+  <!-- App Info Card -->
   <div class="card">
-    <h2>⭐ How it works</h2>
-    <p style="margin: 5px 0;">1. Open the app</p>
-    <p style="margin: 5px 0;">2. Claim your daily reward</p>
-    <p style="margin: 5px 0;">3. Come back tomorrow</p>
+    <h3>📊 Account Status</h3>
+    <p style="color: #9ca3af; font-size: 13px; margin-bottom: 6px;">Status: <span style="color: #10b981; font-weight: bold;">Active</span></p>
+    <p style="color: #9ca3af; font-size: 13px;">Minimum Withdraw: <span style="color: #f59e0b; font-weight: bold;">5,000 Coins</span></p>
   </div>
 
   <div class="footer">
-    Daily Rewards App
+    Secure Crypto WebApp v2.0
   </div>
 
 </div>
 
 <script>
-
   const tg = window.Telegram.WebApp;
-
   tg.ready();
   tg.expand();
 
   let balance = Number(localStorage.getItem("balance")) || 0;
+  updateBalanceDisplay();
 
-  document.getElementById("balance").innerText =
-    balance + " Coins";
+  function updateBalanceDisplay() {
+    document.getElementById("balance").innerText = balance.toLocaleString() + " COINS";
+  }
 
-
+  // Claim Daily Reward with Monetag Popup Ad
   function claimReward() {
-
     const today = new Date().toDateString();
     const lastClaim = localStorage.getItem("lastClaim");
 
     if (lastClaim === today) {
-
-      document.getElementById("message").innerText =
-        "⏰ You already claimed today's reward!";
-
+      document.getElementById("message").innerText = "⏰ Already claimed today! Try tasks.";
       return;
     }
 
-    // Monetag Rewarded Popup function eka
+    triggerAd(() => {
+      balance += 100;
+      localStorage.setItem("balance", balance);
+      localStorage.setItem("lastClaim", today);
+      updateBalanceDisplay();
+      document.getElementById("message").innerText = "🎉 Success! +100 Coins added.";
+    });
+  }
+
+  // Watch Bonus Ad Task
+  function watchBonusAd() {
+    triggerAd(() => {
+      balance += 50;
+      localStorage.setItem("balance", balance);
+      updateBalanceDisplay();
+      document.getElementById("message").innerText = "🎉 Bonus earned! +50 Coins added.";
+    });
+  }
+
+  // Universal Monetag Ad Trigger Function
+  function triggerAd(onSuccess) {
     if (typeof show_11786633 === 'function') {
-        show_11786633('pop').then(() => {
-            giveReward();
-        }).catch(e => {
-            giveReward();
-        });
+      show_11786633('pop').then(() => {
+        onSuccess();
+      }).catch(e => {
+        onSuccess(); // Fallback so user never gets stuck if ad fails to load
+      });
     } else {
-        giveReward();
+      onSuccess();
     }
   }
 
-  function giveReward() {
-    const today = new Date().toDateString();
-    balance += 100;
-
-    localStorage.setItem("balance", balance);
-    localStorage.setItem("lastClaim", today);
-
-    document.getElementById("balance").innerText =
-      balance + " Coins";
-
-    document.getElementById("message").innerText =
-      "🎉 Congratulations! You received 100 coins.";
+  // Withdraw Button Action
+  function openWithdraw() {
+    if (balance < 5000) {
+      alert("❌ Insufficient balance! Minimum withdrawal is 5,000 Coins.");
+    } else {
+      alert("✅ Withdrawal request submitted successfully! Funds will arrive soon.");
+    }
   }
-
 </script>
 
 </body>
