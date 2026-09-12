@@ -40,21 +40,10 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
 
-    .profile-img {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      border: 2px solid #c084fc;
-      object-fit: cover;
-      margin-bottom: 10px;
-      box-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
-      display: none;
-    }
-
     .header h1 {
-      font-size: 22px;
+      font-size: 24px;
       color: #c084fc;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
 
     .header p {
@@ -184,10 +173,9 @@
 
 <div class="app">
 
-  <!-- Header Section with Telegram User Info -->
+  <!-- Header Section without User Profile -->
   <div class="header">
-    <img id="user-photo" src="" alt="Profile" class="profile-img">
-    <h1 id="user-name">💎 Crypto Rewards</h1>
+    <h1>💎 Crypto Rewards</h1>
     <p>Mine & Earn Daily Assets</p>
     <div class="balance-box" id="balance">0.00 COINS</div>
   </div>
@@ -248,20 +236,11 @@
   tg.ready();
   tg.expand();
 
-  let userId = "12345"; // Default fallback
+  // Get user ID for referral system silently
+  let userId = "12345";
   const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
-  if (user) {
-    if (user.first_name) {
-      document.getElementById("user-name").innerText = "👋 " + user.first_name;
-    }
-    if (user.photo_url) {
-      const img = document.getElementById("user-photo");
-      img.src = user.photo_url;
-      img.style.display = "inline-block";
-    }
-    if (user.id) {
-      userId = user.id;
-    }
+  if (user && user.id) {
+    userId = user.id;
   }
 
   let balance = Number(localStorage.getItem("balance")) || 0;
@@ -298,16 +277,12 @@
     });
   }
 
-  // Referral Invite Feature
   function inviteFriends() {
-    const botUsername = "dailyrewardsapp_bot"; // Oyaage Bot ge Username eka mekata danna
+    const botUsername = "dailyrewardsapp_bot";
     const refLink = `https://t.me/${botUsername}?start=ref_${userId}`;
     const shareText = `🚀 Join Daily Crypto Rewards and start earning free coins! Use my link to join: ${refLink}`;
     
-    // Telegram native share link
     const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(shareText)}`;
-    
-    // Open Telegram share interface
     window.open(telegramShareUrl, '_blank');
   }
 
