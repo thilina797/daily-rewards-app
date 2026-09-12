@@ -18,7 +18,7 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #0b0f19; /* Deep Crypto Dark Blue Background */
+      background: #0b0f19;
       color: #f8fafc;
     }
 
@@ -30,7 +30,6 @@
       padding-bottom: 40px;
     }
 
-    /* Header Profile & Balance Section */
     .header {
       background: linear-gradient(135deg, #1e1b4b, #311042);
       border: 1px solid #4c1d95;
@@ -41,21 +40,37 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
 
+    /* Telegram Profile Picture Style */
+    .profile-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid #c084fc;
+      object-fit: cover;
+      margin-bottom: 10px;
+      box-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
+      display: none; /* Hidden by default until loaded */
+    }
+
     .header h1 {
-      font-size: 24px;
+      font-size: 22px;
       color: #c084fc;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: #94a3b8;
     }
 
     .balance-box {
-      font-size: 36px;
+      font-size: 34px;
       font-weight: bold;
       color: #38bdf8;
       margin: 15px 0;
       text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
     }
 
-    /* Action Buttons Grid (Claim & Withdraw) */
     .actions-grid {
       display: flex;
       gap: 12px;
@@ -93,7 +108,6 @@
       transform: scale(0.97);
     }
 
-    /* Cards for Tasks & Features */
     .card {
       background: #111827;
       border: 1px solid #1f2937;
@@ -107,9 +121,6 @@
       font-size: 18px;
       color: #f3f4f6;
       margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
     .task-item {
@@ -165,14 +176,15 @@
 
 <div class="app">
 
-  <!-- Header Section -->
+  <!-- Header Section with Telegram User Info -->
   <div class="header">
-    <h1>💎 Crypto Rewards</h1>
+    <img id="user-photo" src="" alt="Profile" class="profile-img">
+    <h1 id="user-name">💎 Crypto Rewards</h1>
     <p>Mine & Earn Daily Assets</p>
     <div class="balance-box" id="balance">0.00 COINS</div>
   </div>
 
-  <!-- Main Action Buttons (Claim & Withdraw) -->
+  <!-- Main Action Buttons -->
   <div class="actions-grid">
     <button class="btn btn-primary" onclick="claimReward()">
       🎁 Watch & Claim
@@ -223,6 +235,19 @@
   tg.ready();
   tg.expand();
 
+  // Load Telegram User Profile Details Automatically
+  const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
+  if (user) {
+    if (user.first_name) {
+      document.getElementById("user-name").innerText = "👋 " + user.first_name;
+    }
+    if (user.photo_url) {
+      const img = document.getElementById("user-photo");
+      img.src = user.photo_url;
+      img.style.display = "inline-block";
+    }
+  }
+
   let balance = Number(localStorage.getItem("balance")) || 0;
   updateBalanceDisplay();
 
@@ -230,7 +255,6 @@
     document.getElementById("balance").innerText = balance.toLocaleString() + " COINS";
   }
 
-  // Claim Daily Reward with Monetag Popup Ad
   function claimReward() {
     const today = new Date().toDateString();
     const lastClaim = localStorage.getItem("lastClaim");
@@ -249,7 +273,6 @@
     });
   }
 
-  // Watch Bonus Ad Task
   function watchBonusAd() {
     triggerAd(() => {
       balance += 50;
@@ -259,20 +282,18 @@
     });
   }
 
-  // Universal Monetag Ad Trigger Function
   function triggerAd(onSuccess) {
     if (typeof show_11786633 === 'function') {
       show_11786633('pop').then(() => {
         onSuccess();
       }).catch(e => {
-        onSuccess(); // Fallback so user never gets stuck if ad fails to load
+        onSuccess();
       });
     } else {
       onSuccess();
     }
   }
 
-  // Withdraw Button Action
   function openWithdraw() {
     if (balance < 5000) {
       alert("❌ Insufficient balance! Minimum withdrawal is 5,000 Coins.");
