@@ -40,7 +40,6 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
 
-    /* Telegram Profile Picture Style */
     .profile-img {
       width: 70px;
       height: 70px;
@@ -49,7 +48,7 @@
       object-fit: cover;
       margin-bottom: 10px;
       box-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
-      display: none; /* Hidden by default until loaded */
+      display: none;
     }
 
     .header h1 {
@@ -102,6 +101,14 @@
       background: linear-gradient(135deg, #059669, #047857);
       color: white;
       box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+    }
+
+    .btn-ref {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: white;
+      box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+      width: 100%;
+      margin-bottom: 16px;
     }
 
     .btn:active {
@@ -157,6 +164,7 @@
 
     .message {
       margin-top: 10px;
+      margin-bottom: 15px;
       font-size: 14px;
       font-weight: bold;
       text-align: center;
@@ -193,6 +201,11 @@
       🏦 Withdraw
     </button>
   </div>
+
+  <!-- Invite Friends / Referral Button -->
+  <button class="btn btn-ref" onclick="inviteFriends()">
+    👥 Invite Friends (+500 Coins)
+  </button>
 
   <div class="message" id="message"></div>
 
@@ -235,7 +248,7 @@
   tg.ready();
   tg.expand();
 
-  // Load Telegram User Profile Details Automatically
+  let userId = "12345"; // Default fallback
   const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
   if (user) {
     if (user.first_name) {
@@ -245,6 +258,9 @@
       const img = document.getElementById("user-photo");
       img.src = user.photo_url;
       img.style.display = "inline-block";
+    }
+    if (user.id) {
+      userId = user.id;
     }
   }
 
@@ -280,6 +296,19 @@
       updateBalanceDisplay();
       document.getElementById("message").innerText = "🎉 Bonus earned! +50 Coins added.";
     });
+  }
+
+  // Referral Invite Feature
+  function inviteFriends() {
+    const botUsername = "dailyrewardsapp_bot"; // Oyaage Bot ge Username eka mekata danna
+    const refLink = `https://t.me/${botUsername}?start=ref_${userId}`;
+    const shareText = `🚀 Join Daily Crypto Rewards and start earning free coins! Use my link to join: ${refLink}`;
+    
+    // Telegram native share link
+    const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(shareText)}`;
+    
+    // Open Telegram share interface
+    window.open(telegramShareUrl, '_blank');
   }
 
   function triggerAd(onSuccess) {
