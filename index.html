@@ -1,1 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Rewards</title>
 
+  <!-- Monetag Telegram Mini App SDK Script -->
+  <script src='//libtl.com/sdk.js' data-zone='11786633' data-sdk='show_11786633'></script>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f5f8;
+      color: #222;
+    }
+
+    .app {
+      max-width: 500px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .header {
+      background: #1683d8;
+      color: white;
+      padding: 25px 20px;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .header p {
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 18px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .coin {
+      font-size: 45px;
+    }
+
+    .balance {
+      font-size: 30px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      background: #1683d8;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .ad-box {
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7f7f7;
+      border: 1px dashed #aaa;
+      border-radius: 15px;
+      color: #777;
+      margin-top: 15px;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #1683d8;
+    }
+
+    .footer {
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <h1>🎁 Daily Rewards</h1>
+    <p>Welcome to your daily rewards!</p>
+  </div>
+
+  <div class="card">
+    <div class="coin">🪙</div>
+    <div class="balance" id="balance">0 Coins</div>
+    <p>Come back every day for your reward.</p>
+
+    <button onclick="claimReward()">
+      🎁 Claim Daily Reward
+    </button>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <div class="card">
+    <h2>📢 Sponsored</h2>
+
+    <div class="ad-box">
+      Monetag Ad Area
+    </div>
+
+  </div>
+
+  <div class="card">
+    <h2>⭐ How it works</h2>
+    <p>1. Open the app</p>
+    <p>2. Claim your daily reward</p>
+    <p>3. Come back tomorrow</p>
+  </div>
+
+  <div class="footer">
+    Daily Rewards App
+  </div>
+
+</div>
+
+<script>
+
+  const tg = window.Telegram.WebApp;
+
+  tg.ready();
+  tg.expand();
+
+  let balance = Number(localStorage.getItem("balance")) || 0;
+
+  document.getElementById("balance").innerText =
+    balance + " Coins";
+
+
+  function claimReward() {
+
+    const today = new Date().toDateString();
+    const lastClaim = localStorage.getItem("lastClaim");
+
+    if (lastClaim === today) {
+
+      document.getElementById("message").innerText =
+        "⏰ You already claimed today's reward!";
+
+      return;
+    }
+
+    // Monetag Rewarded Popup function eka
+    if (typeof show_11786633 === 'function') {
+        show_11786633('pop').then(() => {
+            giveReward();
+        }).catch(e => {
+            giveReward();
+        });
+    } else {
+        giveReward();
+    }
+  }
+
+  function giveReward() {
+    const today = new Date().toDateString();
+    balance += 100;
+
+    localStorage.setItem("balance", balance);
+    localStorage.setItem("lastClaim", today);
+
+    document.getElementById("balance").innerText =
+      balance + " Coins";
+
+    document.getElementById("message").innerText =
+      "🎉 Congratulations! You received 100 coins.";
+  }
+
+</script>
+
+</body>
+</html>
